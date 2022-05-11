@@ -32,9 +32,9 @@ for line in all_list:
         if not name == '':
             merge_cmd = "ls ./{sam_name}/*sort.bam > ./{sam_name}/bam.list\nsamtools merge -@ 10 -b ./{sam_name}/bam.list ./{sam_name}/{sam_name}.merge.sort.bam\ncat ./{sam_name}/bam.list|xargs rm"
             mark_dup_cmd = "java -Xmx4G -jar /disk1/pengweixing/software/picard.jar MarkDuplicates --INPUT ./{sam_name}/{sam_name}.merge.sort.bam --METRICS_FILE ./{sam_name}/{sam_name}.sort.matrix --OUTPUT ./{sam_name}/{sam_name}.mardup.sort.bam > ./{sam_name}/{sam_name}.picar.log"
-            f_map.write("%s\n" % merge_cmd.format(sam_name=out))
-            f_map.write("%s\n" % mark_dup_cmd.format(sam_name=out))
-            f_map.write("rm %s.merge.sort.bam \n" % out)
+            f_map.write("%s\n" % merge_cmd.format(sam_name=last))
+            f_map.write("%s\n" % mark_dup_cmd.format(sam_name=last))
+            f_map.write("rm %s.merge.sort.bam \n" % last)
         dir_cmd = "mkdir " + out
         mapping_cmd = "bwa mem -t 30  -R '@RG\\tID:foo\\tSM:{sam_name}\\tLB:library1' /disk1/pengweixing/database/CHM13/chm13v2.0.fa " \
                     + line1[1] + " " + line1[2] + " |samtools view -@ 10 - -b |samtools sort -m 10G -@ 10 - -o  ./{sam_name}/{sam_name}.sort.bam" 
